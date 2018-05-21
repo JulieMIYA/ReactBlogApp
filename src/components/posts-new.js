@@ -16,19 +16,21 @@ function validate (values){
         errors.content = "Enter some content";
     }
     // if errors is empty, the form is fine to submit 
-    // if errors has any properties, redux assume that the form is invalid .
+    // if errors has any properties, redux assume that the form is invalid
     return errors; 
 }
 
 class PostsNew extends Component{
     renderField(field){
+        // redux-form is only responsible for managing the state of form,
+        // it is up to us to render the form (define jsx structure) and wire up the state to certain elements
         return (
             <div>
                 <label>{ field.label }</label>
                 <input 
                     className = "form-control"
                     type="text" 
-                    {...field.input} 
+                    {...field.input}
                 />
             </div>
         )
