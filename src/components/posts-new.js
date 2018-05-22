@@ -7,7 +7,7 @@ function validate (values){
 
     //Validate the inputs form 'values'
     if(!values.title){
-        errors.title = "Enter a title";
+        errors.title = "Enter a title"; // !!! the property must corresponds to the label name  
     }
     if(!values.categories){
         errors.categories = "Enter a category";
@@ -24,23 +24,36 @@ class PostsNew extends Component{
     renderField(field){
         // redux-form is only responsible for managing the state of form,
         // it is up to us to render the form (define jsx structure) and wire up the state to certain elements
+        const { meta, label, input } = field ;
+        const className = `form-group ${meta.touched && meta.error ? 'has-danger' : ''}`;
         return (
-            <div>
-                <label>{ field.label }</label>
+            <div className= {className}>
+                <label>{ label }</label>
                 <input 
                     className = "form-control"
                     type="text" 
-                    {...field.input}
+                    {...input}
                 />
+                <div className="text-help">
+                    {meta.touched? meta.error: ""}
+                </div>
             </div>
         )
     }
+    // onSubmit is a custom callback function passed to handleSubmit, it will execute if data is validated
+    // it allow us to define whatever we want as soon as data is validated 
+    onSubmit(value){
+        console.log(value);
+    }
     render(){
+        // this.props are the props that redux-form generates to give to your decorated form component : PostsNew
+        const { handleSubmit } = this.props ; 
         return (
-            <form>
+            <form onSubmit = { handleSubmit(this.onSubmit.bind(this))} >
                 <Field name= "title" label="Title" component= {this.renderField} />
                 <Field name= "categories" label="Categories" component= {this.renderField} />
                 <Field name= "content" label="Content" component= {this.renderField} />
+                <button className="btn btn-primary">Submit</button>
             </form>
         );
     }
