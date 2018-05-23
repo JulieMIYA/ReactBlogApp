@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form';
+import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { createPost } from '../actions';
 
 function validate (values){
     //console.log(values) -> {title : 'as', categories: 'dshgnsj', content:'bdjskgnfk'}
@@ -42,8 +45,11 @@ class PostsNew extends Component{
     }
     // onSubmit is a custom callback function passed to handleSubmit, it will execute if data is validated
     // it allow us to define whatever we want as soon as data is validated 
-    onSubmit(value){
-        console.log(value);
+    onSubmit(values){ 
+        // values are form fields values
+        this.props.createPost(values, ()=>{
+            this.props.history.push('/');
+        });        
     }
     render(){
         // this.props are the props that redux-form generates to give to your decorated form component : PostsNew
@@ -54,6 +60,7 @@ class PostsNew extends Component{
                 <Field name= "categories" label="Categories" component= {this.renderField} />
                 <Field name= "content" label="Content" component= {this.renderField} />
                 <button className="btn btn-primary">Submit</button>
+                <Link to="/" className="btn btn-danger">Cancel</Link>
             </form>
         );
     }
@@ -62,4 +69,4 @@ class PostsNew extends Component{
 export default reduxForm({
     validate, 
     form : 'PostsNewForm'
-})(PostsNew);
+})(connect(null, {createPost} )(PostsNew));
