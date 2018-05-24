@@ -7,7 +7,7 @@ export default (state = {}, action)=>{
             // var newState = {...state}; // state ?? 
             // newState[action.payload.data.id] = action.payload.data;
             // return newState;
-            return {...state, [action.payload.data.id]: action.payload.data }
+            return {...state, [action.payload.data.id]: action.payload.data } // overwrite value with key 
         // add fetched data into state
         case FETCH_POSTS : 
             return _.mapKeys(action.payload.data, 'id');
